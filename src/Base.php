@@ -43,12 +43,39 @@ class Base
 		);
 	}
 
-	public function saveItem(array $data)
-	{
-		$item = new Item($data);
-		$item->validate();
+	private function item(array $data) : Item {
+		return Item::new()
+		->auth($this->auth)
+		->fill($data);
+	}
 
-		$item->auth($this->auth)
+	public function saveItem(array $data)
+	{	
+		return $this->item($data)
 			->save();
+	}
+
+	public function deleteItem(int $itemId)
+	{
+		return $this->item([
+				"item_id" => $itemId
+			])
+			->delete();
+	}
+
+	public function saveItemImage(int $itemId, int $imageNumber, string $url)
+	{
+		return $this->item([
+				"item_id" => $itemId
+			])
+			->image($imageNumber, $url);
+	}
+
+	public function deleteItemImage(int $itemId, int $imageNumber)
+	{
+		return $this->item([
+				"item_id" => $itemId
+			])
+			->deleteImage($imageNumber);
 	}
 }

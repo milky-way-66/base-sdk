@@ -4,27 +4,26 @@ namespace MilkyWay\BaseSdk;
 
 use MilkyWay\BaseSdk\Enums\HttpMethod;
 use MilkyWay\BaseSdk\Exceptions\ValidateException;
+use MilkyWay\BaseSdk\Traits\AuthTrait;
 
-class Item extends Model
+class Item
 {
-    public function __construct(array $data = [])
-    {
-        $this->fill($data);
-    }
+    use AuthTrait;
 
+    protected array $entity;
+
+    public static function new(): self
+    {
+        return new Item();
+    }
 
     public function endpoint(): string
     {
         return "/1/items";
     }
 
-    public function identify(){
-        return [
-            "item_id" => $this->entity['item_id']
-        ];
-    }
-
     public final array $feilds = [
+        "item_id",
         "title",
         "detail",
         "price",
@@ -39,10 +38,45 @@ class Item extends Model
         "barcode",
     ];
 
-
-    public function feilds()
+    public function fill(array $data): self
     {
-        return $this->feilds;
+        $result = [];
+        foreach ($this->feilds as $feild) {
+            if (array_key_exists($feild, $data)) {
+                $result[$feild] = $data;
+            }
+        }
+
+        $this->entity = $result;
+        return $this;
+    }
+
+    public function save()
+    {
+        $this->validate();
+
+        $response = Curl::new(Constant::uri . $this->endpoint() . "/add")
+            ->bearerAuth($this->auth->accessToken())
+            ->method(HttpMethod::Post)
+            ->body($this->entity)
+            ->exec();
+
+        $this->fill(json_decode($response));
+        return $this->entity;
+    }
+
+    public function delete()
+    {
+
+        $response = Curl::new(Constant::uri . $this->endpoint() . "/delete")
+            ->bearerAuth($this->auth->accessToken())
+            ->method(HttpMethod::Post)
+            ->body([
+                "item_id" => $this->entity['item_id']
+            ])
+            ->exec();
+
+        return json_decode($response);
     }
 
     public function validate()
@@ -70,7 +104,8 @@ class Item extends Model
         return json_decode($response);
     }
 
-    public function deleteImage(int $number){
+    public function deleteImage(int $number)
+    {
         $data = [
             "item_id" => $this->entity["item_id"],
             "image_no" => $number,
