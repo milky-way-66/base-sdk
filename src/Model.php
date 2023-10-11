@@ -16,6 +16,10 @@ abstract class Model implements ModelInterface
         $this->fill($data);
 	}
 
+	public function setEntity(array $entity){
+		$this->entity = $entity;
+	}
+
     public function save()
 	{
 		$this->validate();
@@ -25,7 +29,18 @@ abstract class Model implements ModelInterface
 			->method(HttpMethod::Post)
 			->body($this->data())
 			->exec();
-		$this->entity =	json_decode($response);
+		$this->setEntity(json_decode($response));
 		return $this->entity;
+	}
+
+	public function delete(){
+		
+		$response = Curl::new(Constant::uri .  $this->endpoint() . "/delete")
+			->bearerAuth($this->auth->accessToken())
+			->method(HttpMethod::Post)
+			->body($this->identify())
+			->exec();
+
+		return json_decode($response);
 	}
 }

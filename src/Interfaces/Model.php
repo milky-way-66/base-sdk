@@ -11,4 +11,6 @@ interface Model {
     public function endpoint(): string;
 
     public function data():array;
+
+    public function identify():array;
 }

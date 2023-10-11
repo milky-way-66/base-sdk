@@ -18,6 +18,12 @@ class Item extends Model
         return "/1/items";
     }
 
+    public function identify(){
+        return [
+            "item_id" => $this->entity['item_id']
+        ];
+    }
+
     public final array $feilds = [
         "title",
         "detail",
@@ -56,6 +62,21 @@ class Item extends Model
         ];
 
         $response = Curl::new(Constant::uri . $this->endpoint() . "add_image")
+            ->method(HttpMethod::Post)
+            ->bearerAuth($this->auth->accessToken())
+            ->body($data)
+            ->exec();
+
+        return json_decode($response);
+    }
+
+    public function deleteImage(int $number){
+        $data = [
+            "item_id" => $this->entity["item_id"],
+            "image_no" => $number,
+        ];
+
+        $response = Curl::new(Constant::uri . $this->endpoint() . "delete_image")
             ->method(HttpMethod::Post)
             ->bearerAuth($this->auth->accessToken())
             ->body($data)
