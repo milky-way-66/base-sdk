@@ -1,0 +1,17 @@
+{
+    "name": "milky-way/base-sdk",
+    "description": "Sdk for Base api",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "MilkyWay\\BaseSdk\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "milky-way-66"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
