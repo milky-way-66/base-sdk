@@ -43,14 +43,21 @@ class Base
 		);
 	}
 
-	private function item(array $data) : Item {
+	private function item(array $data): Item
+	{
 		return Item::new()
-		->auth($this->auth)
-		->fill($data);
+			->auth($this->auth)
+			->fill($data);
+	}
+
+	private function order()
+	{
+		return Order::new()
+			->auth($this->auth);
 	}
 
 	public function saveItem(array $data)
-	{	
+	{
 		return $this->item($data)
 			->save();
 	}
@@ -58,24 +65,41 @@ class Base
 	public function deleteItem(int $itemId)
 	{
 		return $this->item([
-				"item_id" => $itemId
-			])
+			"item_id" => $itemId
+		])
 			->delete();
 	}
 
 	public function saveItemImage(int $itemId, int $imageNumber, string $url)
 	{
 		return $this->item([
-				"item_id" => $itemId
-			])
+			"item_id" => $itemId
+		])
 			->image($imageNumber, $url);
 	}
 
 	public function deleteItemImage(int $itemId, int $imageNumber)
 	{
 		return $this->item([
-				"item_id" => $itemId
-			])
+			"item_id" => $itemId
+		])
 			->deleteImage($imageNumber);
+	}
+
+	public function orders(string $start = null, string $end = null, int $limit = null, int $offset = null)
+	{
+		$data = [
+			"start_ordered" => $start,
+			"end_ordered" => $end,
+			"limit" => $limit,
+			"offset" => $offset
+		];
+
+		return $this->order()->list($data);
+	}
+
+	public function orderDetail(string $id)
+	{
+		return $this->order()->detail($id);
 	}
 }

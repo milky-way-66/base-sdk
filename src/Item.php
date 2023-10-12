@@ -14,7 +14,7 @@ class Item
 
     public static function new(): self
     {
-        return new Item();
+        return new self();
     }
 
     public function endpoint(): string
