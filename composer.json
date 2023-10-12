@@ -12,9 +12,8 @@
             "name": "milky-way-66"
         }
     ],
-    "minimum-stability": "dev",
-    "require-dev": {
-        "phpunit/phpunit": "^10",
+    "minimum-stability": "stable",
+    "require": {
         "guzzlehttp/guzzle": "^7.0"
     }
 }
