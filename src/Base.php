@@ -1,6 +1,6 @@
 <?php
 
-namespace App\MilkyWay;
+namespace MilkyWay\BaseSdk;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
