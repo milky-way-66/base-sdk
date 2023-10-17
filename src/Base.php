@@ -27,6 +27,11 @@ class Base
         return $this;
     }
 
+    public function setAccessToken(string $accessToken) : Base{
+        $this->accessToken = $accessToken;
+        return $this;
+    }
+
     public function refreshToken(): void
     {
         $params = [
