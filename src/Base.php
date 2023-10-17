@@ -88,7 +88,7 @@ class Base
             ]
         );
 
-        return json_decode($response->getBody()->getContents())->item;
+        return json_decode($response->getBody()->getContents());
     }
 
     public function deleteItem(int $itemId): stdClass
@@ -120,7 +120,7 @@ class Base
             ]
         );
 
-        return json_decode($response->getBody()->getContents())->item;
+        return json_decode($response->getBody()->getContents());
     }
     
     public function delereItemImage(int $itemId, int $number): stdClass
@@ -136,7 +136,7 @@ class Base
             ]
         );
 
-        return json_decode($response->getBody()->getContents())->item;
+        return json_decode($response->getBody()->getContents());
     }
 
     public function orders(string $start = null, string $end = null, int $limit = null, int $offset = null){
@@ -157,7 +157,7 @@ class Base
             ]
         );
 
-        return json_decode($response->getBody()->getContents())->orders;
+        return json_decode($response->getBody()->getContents());
     }
 
     public function order(string $id){
